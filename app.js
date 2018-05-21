@@ -69,7 +69,7 @@ app.get('*',function(req,res){
 });
 
 app.delete('/:msisdn/brand',function(req,res){
-    res.json({"fault":{
+   return res.json({"fault":{
         "faultstring": "Unsupported HTTP Method",
         "detail": {
             "errorcode": "40001",
@@ -81,7 +81,7 @@ app.delete('/:msisdn/brand',function(req,res){
     });
 });
 app.post('/:msisdn/brand',function(req,res){
-    res.json({"fault":{
+   return res.json({"fault":{
         "faultstring": "Unsupported HTTP Method",
         "detail": {
             "errorcode": "40001",
@@ -93,7 +93,7 @@ app.post('/:msisdn/brand',function(req,res){
     });
 });
 app.patch('/:msisdn/brand',function(req,res){
-    res.json({"fault":{
+    return res.json({"fault":{
         "faultstring": "Unsupported HTTP Method",
         "detail": {
             "errorcode": "40001",
@@ -105,7 +105,7 @@ app.patch('/:msisdn/brand',function(req,res){
     });
 });
 app.put('/:msisdn/brand',function(req,res){
-    res.json({"fault":{
+   return res.json({"fault":{
         "faultstring": "Unsupported HTTP Method",
         "detail": {
             "errorcode": "40001",
