@@ -55,12 +55,12 @@ app.get('//brand',function(req,res){
         });
 });
 
-app.get('/brand',function(req,res){
+app.get('*',function(req,res){
     return res.json({"fault":{
-            "faultstring": "Insufficient Parameters",
+            "faultstring": "Not Found",
             "detail": {
-                "errorcode": "40003",
-                "errormessage": "The request is missing a mandatory parameter."
+                "errorcode": "40401",
+                "errormessage": "The request resource is not found."
 
             },
             "moreinfo": ""
