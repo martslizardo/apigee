@@ -12,82 +12,49 @@ console.log('Server started! At http://localhost:' + port);
 app.get('/',function(req,res){
         res.sendFile(__dirname +'/views/index.html');
 });
-app.route('/:msisdn/brand')
-    .get(function(req,res){
+
+app.all('/:msisdn/brand',function(req,res){
+    var data;
+    if(req.method=='GET'){
         var msisdn=req.params.msisdn;
         var url='https://polar-inlet-9281.herokuapp.com/brand/'+ msisdn;
         request.get(url,function(error,response,body){
-            console.log(msisdn);
-            console.log('error:', error); // Print the error if one occurred
-            console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
-            console.log('body:', body);
-            var result=JSON.parse(body);
-            var data;
-            if(result.error){
-                data={
-                    "fault": {
-                        "faultstring": "Invalid Parameter",
-                        "detail": {
-                            "errorcode":"40002",
-                            "errormessage": "The request parameter msisdn is invalid." 
-                        },
-                        "moreinfo": "",
+            try {
+                var result=JSON.parse(body);
+                    if(result.error){
+                        data={
+                                "fault": 
+                                {
+                                    "faultstring": "Invalid Parameter",
+                                    "detail": {
+                                    "errorcode":"40002",
+                                    "errormessage": "The request parameter msisdn is invalid." 
+                                    },
+                                    "moreinfo": "",
+                                }
+                            };    
+                    }else{
+                        data={msisdn:msisdn,brand:result.brand};
                     }
-                    };    
-            }else{
-                data={msisdn:msisdn,brand:result.brand};
-            }
-            return res.json(data);        
-        });    
-    })
-    .post(function(req,res){
-        res.json({"fault":{
-            "faultstring": "Unsupported HTTP Method",
-            "detail": {
+                    }catch(e){
+                        data={error:"Invalid JSON String"};
+                    }
+            res.json(data); 
+        });
+    }else{
+        data={"fault":{
+                "faultstring": "Unsupported HTTP Method",
+                "detail": {
                 "errorcode": "40001",
                 "errormessage": "The requested operation is not supported.."
-    
-            },
-            "moreinfo": ""
-            }
-        });
-    })
-    .delete(function(req,res){
-        res.json({"fault":{
-            "faultstring": "Unsupported HTTP Method",
-            "detail": {
-                "errorcode": "40001",
-                "errormessage": "The requested operation is not supported.."
-    
-            },
-            "moreinfo": ""
-            }
-        });
-    })  
-    .patch(function(req,res){
-        res.json({"fault":{
-            "faultstring": "Unsupported HTTP Method",
-            "detail": {
-                "errorcode": "40001",
-                "errormessage": "The requested operation is not supported.."
-    
-            },
-            "moreinfo": ""
-            }
-        });
-    })
-    .put(function(req,res){
-        res.json({"fault":{
-            "faultstring": "Unsupported HTTP Method",
-            "detail": {
-                "errorcode": "40001",
-                "errormessage": "The requested operation is not supported.."
-    
-            },
-            "moreinfo": ""
-            }
-        });
-    })
+                        },
+                        "moreinfo": ""
+                        }
+            };
+        res.json(data);
+    }
+
+})
 
 app.get('//brand',function(req,res){
     return res.json({"fault":{
@@ -115,51 +82,3 @@ app.get('*',function(req,res){
         });
 });
 
-// app.delete('/:msisdn/brand',function(req,res){
-//    return res.json({"fault":{
-//         "faultstring": "Unsupported HTTP Method",
-//         "detail": {
-//             "errorcode": "40001",
-//             "errormessage": "The requested operation is not supported.."
-
-//         },
-//         "moreinfo": ""
-//         }
-//     });
-// });
-// app.post('/:msisdn/brand',function(req,res){
-//    return res.json({"fault":{
-//         "faultstring": "Unsupported HTTP Method",
-//         "detail": {
-//             "errorcode": "40001",
-//             "errormessage": "The requested operation is not supported.."
-
-//         },
-//         "moreinfo": ""
-//         }
-//     });
-// });
-// app.patch('/:msisdn/brand',function(req,res){
-//     return res.json({"fault":{
-//         "faultstring": "Unsupported HTTP Method",
-//         "detail": {
-//             "errorcode": "40001",
-//             "errormessage": "The requested operation is not supported.."
-
-//         },
-//         "moreinfo": ""
-//         }
-//     });
-// });
-// app.put('/:msisdn/brand',function(req,res){
-//    return res.json({"fault":{
-//         "faultstring": "Unsupported HTTP Method",
-//         "detail": {
-//             "errorcode": "40001",
-//             "errormessage": "The requested operation is not supported.."
-
-//         },
-//         "moreinfo": ""
-//         }
-//     });
-// });
