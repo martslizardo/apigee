@@ -32,11 +32,13 @@ app.all('/:msisdn/brand',function(req,res){
                                     },
                                     "moreinfo": "",
                                 }
-                            };    
+                            };
+                        res.status(400);    
                     }else{
                         data={msisdn:msisdn,brand:result.brand};
                     }
                     }catch(e){
+                        res.status(400);
                         data={error:"Invalid JSON String"};
                     }
             res.json(data); 
@@ -51,13 +53,15 @@ app.all('/:msisdn/brand',function(req,res){
                         "moreinfo": ""
                         }
             };
+        res.status(400);
         res.json(data);
     }
 
 })
 
 app.get('//brand',function(req,res){
-    return res.json({"fault":{
+    res.status(400);
+    res.json({"fault":{
             "faultstring": "Insufficient Parameters",
             "detail": {
                 "errorcode": "40003",
@@ -70,7 +74,8 @@ app.get('//brand',function(req,res){
 });
 
 app.get('*',function(req,res){
-    return res.json({"fault":{
+    res.status(400);
+    res.json({"fault":{
             "faultstring": "Not Found",
             "detail": {
                 "errorcode": "40401",
